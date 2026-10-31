@@ -1,0 +1,14 @@
+# 模型目录：前端只从 GET /api/v1/models 读取，不在代码里硬编码厂商
+models:
+  - id: zhipu-cogview-4
+    provider: zhipu
+    display_name: 智谱 CogView-4
+    capability: text_to_image
+    enabled: false
+    note: 待配置 ZHIPU_API_KEY（P1 接入）
+  - id: mock-image-v1
+    provider: mock
+    display_name: Mock 演示模型
+    capability: text_to_image
+    enabled: true
+    note: P0 联调占位，不产生真实图片

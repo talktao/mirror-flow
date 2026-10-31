@@ -1,0 +1,67 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-canvas: #0b0b0d;
+  --color-surface: #141417;
+  --color-surface-2: #191920;
+  --color-line: #26262d;
+  --color-line-soft: #1e1e24;
+  --color-ink: #e7e7ea;
+  --color-muted: #8a8a93;
+  --color-faint: #55555e;
+  --color-accent: #8b5cf6;
+  --color-accent-soft: #c084fc;
+  --font-sans:
+    ui-sans-serif, -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui,
+    sans-serif;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 画布点阵背景 */
+.canvas-grid {
+  background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.055) 1px, transparent 0);
+  background-size: 26px 26px;
+}
+
+/* 顶部/卡片微弱高光 */
+.glow-accent {
+  background:
+    radial-gradient(60% 90% at 20% 0%, rgba(139, 92, 246, 0.12), transparent 70%),
+    radial-gradient(50% 80% at 90% 10%, rgba(192, 132, 252, 0.08), transparent 70%);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #2c2c34;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}

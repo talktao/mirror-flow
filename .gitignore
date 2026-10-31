@@ -1,0 +1,19 @@
+# 依赖与构建产物
+node_modules/
+dist/
+bin/
+server/server
+server/data/
+web/.env.local
+
+# 本地环境
+.env
+*.local
+*.log
+.DS_Store
+.uploads/
+.screenshots/
+
+# 编辑器
+.idea/
+.vscode/
