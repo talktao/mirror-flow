@@ -4,6 +4,7 @@ package config
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -45,6 +46,11 @@ func (c Config) validate() error {
 }
 
 func (c Config) IsProduction() bool { return c.Env == "production" }
+
+// DBPath 把 DataDir 和固定文件名拼成 SQLite 文件路径，避免各处手写路径。
+func (c Config) DBPath() string {
+	return filepath.Join(c.DataDir, "mirror.db")
+}
 
 func getenv(key, fallback string) string {
 	if v, ok := os.LookupEnv(key); ok && v != "" {

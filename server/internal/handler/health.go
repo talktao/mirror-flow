@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -15,7 +16,8 @@ func (h *Handler) healthz(c *gin.Context) {
 	})
 }
 
-// readyz 只做进程内就绪检查；DB / 队列的探针在 P1 接入。
+// readyz 做进程内就绪检查：配置、模型目录、数据库连接。
+// context.WithTimeout 限制探测耗时，避免数据库卡住时把探针一起拖死。
 func (h *Handler) readyz(c *gin.Context) {
 	checks := gin.H{
 		"config":  "ok",
@@ -26,6 +28,17 @@ func (h *Handler) readyz(c *gin.Context) {
 	if len(h.catalog.Models) == 0 {
 		checks["catalog"] = "empty"
 		status = "degraded"
+	}
+
+	if h.store != nil {
+		pingCtx, cancel := context.WithTimeout(c.Request.Context(), 2*time.Second)
+		defer cancel()
+		if err := h.store.Ping(pingCtx); err != nil {
+			checks["database"] = "down"
+			status = "degraded"
+		} else {
+			checks["database"] = "ok"
+		}
 	}
 
 	c.JSON(http.StatusOK, gin.H{

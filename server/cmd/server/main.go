@@ -15,6 +15,8 @@ import (
 	"mirrorflow/server/internal/handler"
 	"mirrorflow/server/internal/model"
 	"mirrorflow/server/internal/pkg/logx"
+	"mirrorflow/server/internal/service"
+	"mirrorflow/server/internal/store"
 )
 
 func main() {
@@ -32,6 +34,16 @@ func main() {
 		os.Exit(1)
 	}
 
+	// SQLite 是画布/任务的持久事实源；OpenSQLite 内部会按文件名顺序执行迁移。
+	db, err := store.OpenSQLite(context.Background(), cfg.DBPath())
+	if err != nil {
+		log.Error("初始化数据库失败", "err", err, "path", cfg.DBPath())
+		os.Exit(1)
+	}
+	defer db.Close()
+
+	canvasService := service.NewCanvasService(db)
+
 	// P1 装配顺序：
 	// store(sqlite) → adapter.Registry(zhipu/mock) → task.MemQueue
 	// → task.Manager(worker 池) → sse.Hub → handler.New
@@ -39,6 +51,8 @@ func main() {
 		Config:  cfg,
 		Catalog: catalog,
 		Logger:  log,
+		Store:   db,
+		Canvas:  canvasService,
 	})
 
 	srv := &http.Server{
@@ -51,7 +65,7 @@ func main() {
 	defer stop()
 
 	go func() {
-		log.Info("api 已启动", "addr", cfg.HTTPAddr, "models", len(catalog.Models))
+		log.Info("api 已启动", "addr", cfg.HTTPAddr, "models", len(catalog.Models), "db", cfg.DBPath())
 		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Error("http 服务异常退出", "err", err)
 			stop()
