@@ -1,5 +1,6 @@
 import { useHealth, type ConnState } from '../../hooks/useHealth'
 import { useUiStore } from '../../stores/ui'
+import { Button } from '../ui/Button'
 import { Icon } from '../ui/Icon'
 
 const CONN_TEXT: Record<ConnState, string> = {
@@ -26,26 +27,25 @@ export function TopBar() {
         </div>
         <span className="mr-2 text-[15px] font-semibold tracking-wide">Mirror Flow</span>
 
-        <button
-          type="button"
+        <Button
+          variant="outline"
+          size="sm"
+          align="start"
           onClick={() => showNotice('P0 骨架：项目切换尚未接入')}
-          className="flex items-center gap-2 rounded-xl border border-line bg-surface px-3 py-1.5 text-left transition-colors hover:border-accent/50"
         >
           <div className="leading-tight">
             <div className="text-[12.5px] text-ink">第一张画布</div>
             <div className="text-[10.5px] text-muted">画布 1</div>
           </div>
           <Icon name="chevron-down" className="size-3.5 text-muted" />
-        </button>
+        </Button>
 
-        <button
-          type="button"
-          onClick={() => showNotice('P0 骨架：新建画布尚未接入')}
-          className="hidden items-center gap-1 rounded-lg bg-accent/15 px-2.5 py-1.5 text-[12px] font-medium text-accent-soft transition-colors hover:bg-accent/25 sm:flex"
-        >
-          <Icon name="plus" className="size-3.5" />
-          画布
-        </button>
+        <div className="hidden sm:block">
+          <Button variant="soft" size="sm" onClick={() => showNotice('P0 骨架：新建画布尚未接入')}>
+            <Icon name="plus" className="size-3.5" />
+            画布
+          </Button>
+        </div>
       </div>
 
       <div className="flex items-center gap-2">
@@ -57,23 +57,25 @@ export function TopBar() {
           {CONN_TEXT[state]}
         </span>
 
-        <button
-          type="button"
-          onClick={() => showNotice('P0 骨架：项目监控面板尚未接入')}
-          className="hidden items-center gap-1.5 rounded-lg border border-line bg-surface px-3 py-1.5 text-[12px] text-zinc-300 transition-colors hover:border-accent/50 hover:text-ink sm:flex"
-        >
-          <Icon name="monitor" className="size-3.5" />
-          项目监控
-        </button>
+        <div className="hidden sm:block">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => showNotice('P0 骨架：项目监控面板尚未接入')}
+          >
+            <Icon name="monitor" className="size-3.5" />
+            项目监控
+          </Button>
+        </div>
 
-        <button
-          type="button"
+        <Button
+          variant="outline"
+          size="sm"
           onClick={() => showNotice('P0 骨架：API 配置面板尚未接入')}
-          className="flex items-center gap-1.5 rounded-lg border border-line bg-surface px-3 py-1.5 text-[12px] text-zinc-300 transition-colors hover:border-accent/50 hover:text-ink"
         >
           <Icon name="sliders" className="size-3.5" />
           配置 API
-        </button>
+        </Button>
       </div>
     </header>
   )

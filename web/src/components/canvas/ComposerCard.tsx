@@ -3,6 +3,7 @@ import { useModels } from '../../hooks/useModels'
 import { useStudioStore } from '../../stores/studio'
 import { useUiStore } from '../../stores/ui'
 import type { Capability } from '../../types'
+import { Button } from '../ui/Button'
 import { Icon } from '../ui/Icon'
 
 const MODE_OPTIONS: { value: Capability; label: string }[] = [
@@ -95,15 +96,17 @@ export function ComposerCard() {
           ))}
         </select>
 
-        <button
-          type="button"
+        <Button
+          variant="primary"
+          size="icon"
+          shape="pill"
           onClick={handleSubmit}
           disabled={!canSubmit}
           aria-label="提交"
-          className="ml-auto flex size-8 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-soft text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-35"
+          className="ml-auto"
         >
           <Icon name="arrow-up" className="size-4" strokeWidth={2} />
-        </button>
+        </Button>
       </div>
     </section>
   )

@@ -1,6 +1,7 @@
 import { useStudioStore } from '../../stores/studio'
 import { useUiStore } from '../../stores/ui'
 import type { Capability } from '../../types'
+import { Button } from '../ui/Button'
 import { Icon, type IconName } from '../ui/Icon'
 
 interface Chip {
@@ -31,18 +32,18 @@ export function CapabilityBar() {
 
       <div className="flex flex-wrap items-center justify-center gap-2">
         {CHIPS.map((chip) => (
-          <button
+          <Button
             key={chip.label}
-            type="button"
+            variant="outline"
+            size="sm"
             onClick={() => {
               if (chip.capability) setCapability(chip.capability)
               showNotice(chip.hint)
             }}
-            className="flex items-center gap-1.5 rounded-xl border border-line bg-surface/70 px-3 py-1.5 text-[11.5px] text-zinc-300 transition-colors hover:border-accent/50 hover:text-ink"
           >
             <Icon name={chip.icon} className="size-3.5 text-muted" />
             {chip.label}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

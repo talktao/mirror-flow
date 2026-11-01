@@ -1,4 +1,5 @@
 import { useUiStore } from '../../stores/ui'
+import { Button } from '../ui/Button'
 import { Icon, type IconName } from '../ui/Icon'
 
 interface RailItem {
@@ -26,19 +27,17 @@ function RailButton({ item }: { item: RailItem }) {
   const showNotice = useUiStore((s) => s.showNotice)
 
   return (
-    <button
-      type="button"
+    <Button
+      variant={item.active ? 'soft' : 'ghost'}
+      size="icon"
+      shape="square"
       title={item.label}
       aria-label={item.label}
       onClick={() => showNotice(`P0 骨架：${item.label}尚未接入`)}
-      className={`flex size-9 items-center justify-center rounded-[10px] transition-colors ${
-        item.active
-          ? 'bg-accent/15 text-accent-soft shadow-[0_0_14px_rgba(139,92,246,0.25)]'
-          : 'text-muted hover:bg-surface-2 hover:text-ink'
-      }`}
+      className={item.active ? 'shadow-[0_0_14px_rgba(139,92,246,0.25)]' : undefined}
     >
       <Icon name={item.name} className="size-[17px]" />
-    </button>
+    </Button>
   )
 }
 

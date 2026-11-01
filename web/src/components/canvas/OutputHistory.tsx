@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useTaskStore } from '../../stores/tasks'
+import { Button } from '../ui/Button'
 import { Icon } from '../ui/Icon'
 
 export function OutputHistory() {
@@ -12,14 +13,15 @@ export function OutputHistory() {
         <div className="mb-2 w-[320px] rounded-xl border border-line bg-surface/95 p-3 shadow-[0_16px_40px_rgba(0,0,0,0.5)] backdrop-blur">
           <div className="mb-2 flex items-center justify-between">
             <span className="text-[12px] font-medium">输出历史</span>
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
+            <Button
+              variant="ghost"
+              size="iconSm"
+              shape="square"
               aria-label="关闭"
-              className="text-muted hover:text-ink"
+              onClick={() => setOpen(false)}
             >
               <Icon name="close" className="size-3.5" />
-            </button>
+            </Button>
           </div>
           {history.length === 0 ? (
             <p className="rounded-lg border border-dashed border-line px-3 py-6 text-center text-[11px] text-faint">
@@ -37,15 +39,16 @@ export function OutputHistory() {
         </div>
       )}
 
-      <button
-        type="button"
+      <Button
+        variant="pill"
+        size="sm"
+        shape="pill"
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 rounded-full border border-line bg-surface/80 px-3.5 py-1.5 text-[11.5px] text-zinc-300 shadow-lg backdrop-blur transition-colors hover:border-accent/50"
       >
         <Icon name="history" className="size-3.5 text-muted" />
         输出历史
         <span className="rounded-full bg-white/8 px-1.5 text-[10px] text-muted">{history.length}</span>
-      </button>
+      </Button>
     </div>
   )
 }
