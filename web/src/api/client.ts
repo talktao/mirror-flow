@@ -1,6 +1,6 @@
 import type { ErrorBody, HealthInfo, ModelList } from '../types'
 
-const API_BASE = import.meta.env.VITE_API_BASE ?? '/api/v1'
+export const API_BASE = import.meta.env.VITE_API_BASE ?? '/api/v1'
 
 export class ApiError extends Error {
   readonly code: string
@@ -16,8 +16,13 @@ export class ApiError extends Error {
   }
 }
 
-async function getJSON<T>(url: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(url, { headers: { Accept: 'application/json' }, ...init })
+/** 唯一允许 fetch 的地方：统一 JSON 解析与 {code, message, request_id} 错误归一。 */
+export async function request<T>(url: string, init?: RequestInit): Promise<T> {
+  const { headers, ...rest } = init ?? {}
+  const res = await fetch(url, {
+    ...rest,
+    headers: { Accept: 'application/json', ...headers },
+  })
   const text = await res.text()
   const body = text ? (JSON.parse(text) as unknown) : null
 
@@ -34,6 +39,6 @@ async function getJSON<T>(url: string, init?: RequestInit): Promise<T> {
 }
 
 export const api = {
-  health: () => getJSON<HealthInfo>('/healthz'),
-  models: () => getJSON<ModelList>(`${API_BASE}/models`),
+  health: () => request<HealthInfo>('/healthz'),
+  models: () => request<ModelList>(`${API_BASE}/models`),
 }

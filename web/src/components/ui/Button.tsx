@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes } from 'react'
 import { cn } from '../../lib/cn'
 
-type ButtonVariant = 'outline' | 'soft' | 'ghost' | 'primary' | 'pill'
+type ButtonVariant = 'outline' | 'soft' | 'ghost' | 'primary' | 'pill' | 'dashed'
 type ButtonSize = 'sm' | 'md' | 'icon' | 'iconSm'
 type ButtonShape = 'rounded' | 'pill' | 'square'
 
@@ -11,6 +11,7 @@ const VARIANTS: Record<ButtonVariant, string> = {
   ghost: 'text-muted hover:bg-surface-2 hover:text-ink',
   primary: 'bg-gradient-to-br from-accent to-accent-soft text-white hover:opacity-90',
   pill: 'border border-line bg-surface/80 text-zinc-300 shadow-lg backdrop-blur hover:border-accent/50',
+  dashed: 'border border-dashed border-line bg-surface/40 text-muted hover:border-accent/50 hover:bg-surface hover:text-ink',
 }
 
 const SIZES: Record<ButtonSize, string> = {

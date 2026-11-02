@@ -2,6 +2,7 @@ import { useHealth, type ConnState } from '../../hooks/useHealth'
 import { useUiStore } from '../../stores/ui'
 import { Button } from '../ui/Button'
 import { Icon } from '../ui/Icon'
+import { CanvasSwitcher } from './CanvasSwitcher'
 
 const CONN_TEXT: Record<ConnState, string> = {
   checking: '连接中',
@@ -18,6 +19,7 @@ const CONN_DOT: Record<ConnState, string> = {
 export function TopBar() {
   const { state, info } = useHealth()
   const showNotice = useUiStore((s) => s.showNotice)
+  const setView = useUiStore((s) => s.setView)
 
   return (
     <header className="relative z-30 flex h-14 shrink-0 items-center justify-between border-b border-line-soft bg-canvas/80 px-3 backdrop-blur">
@@ -27,21 +29,10 @@ export function TopBar() {
         </div>
         <span className="mr-2 text-[15px] font-semibold tracking-wide">Mirror Flow</span>
 
-        <Button
-          variant="outline"
-          size="sm"
-          align="start"
-          onClick={() => showNotice('P0 骨架：项目切换尚未接入')}
-        >
-          <div className="leading-tight">
-            <div className="text-[12.5px] text-ink">第一张画布</div>
-            <div className="text-[10.5px] text-muted">画布 1</div>
-          </div>
-          <Icon name="chevron-down" className="size-3.5 text-muted" />
-        </Button>
+        <CanvasSwitcher />
 
         <div className="hidden sm:block">
-          <Button variant="soft" size="sm" onClick={() => showNotice('P0 骨架：新建画布尚未接入')}>
+          <Button variant="soft" size="sm" onClick={() => setView('canvases')}>
             <Icon name="plus" className="size-3.5" />
             画布
           </Button>

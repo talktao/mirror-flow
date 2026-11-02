@@ -20,6 +20,9 @@ export type IconName =
   | 'text'
   | 'video'
   | 'upload'
+  | 'arrow-left'
+  | 'pencil'
+  | 'trash'
 
 const ICONS: Record<IconName, ReactNode> = {
   plus: <path d="M12 5v14M5 12h14" />,
@@ -101,6 +104,20 @@ const ICONS: Record<IconName, ReactNode> = {
     </>
   ),
   upload: <path d="M12 17V5M7.5 9.5 12 5l4.5 4.5M5 20h14" />,
+  'arrow-left': <path d="M19 12H5M11 6l-6 6 6 6" />,
+  pencil: (
+    <>
+      <path d="M12 20h9" />
+      <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4z" />
+    </>
+  ),
+  trash: (
+    <>
+      <path d="M3 6h18M8 6V4h8v2" />
+      <path d="M6 6l1 14h10l1-14" />
+      <path d="M10 10v6M14 10v6" />
+    </>
+  ),
 }
 
 interface IconProps {

@@ -32,3 +32,26 @@ export interface ErrorBody {
   message: string
   request_id?: string
 }
+
+/** 画布（项目）元数据，字段与后端 model.Canvas 的 json tag 对齐 */
+export interface Canvas {
+  id: string
+  name: string
+  description: string
+  created_at: number
+  updated_at: number
+}
+
+export interface CanvasList {
+  items: Canvas[]
+}
+
+export interface CanvasItem {
+  item: Canvas
+}
+
+/** 创建/更新画布的请求体 */
+export interface CanvasInput {
+  name: string
+  description: string
+}
