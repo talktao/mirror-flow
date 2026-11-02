@@ -1,13 +1,24 @@
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { useCanvases } from './hooks/useCanvases'
 import Canvases from './pages/Canvases'
 import Studio from './pages/Studio'
-import { useUiStore } from './stores/ui'
 
+/**
+ * 路由约定：
+ * /                画布管理（首页）
+ * /canvas/:canvasId 无限画布
+ */
 export default function App() {
-  const view = useUiStore((s) => s.view)
-
-  // 画布列表在应用层拉一次，Studio 与画布管理页共享同一份 store。
+  // 画布列表在应用层拉一次，两个路由共享同一份 store。
   useCanvases()
 
-  return view === 'canvases' ? <Canvases /> : <Studio />
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Canvases />} />
+        <Route path="/canvas/:canvasId" element={<Studio />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }

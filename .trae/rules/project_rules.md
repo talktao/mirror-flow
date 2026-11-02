@@ -27,6 +27,8 @@ web/src/
 
 禁止：页面或业务组件直接 `fetch`；`components/ui` 反向 import 业务组件；跨域组件互相引用内部实现。
 
+路由使用 `react-router-dom`：`/` 是画布管理首页，`/canvas/:canvasId` 是无限画布。页面跳转只用 `useNavigate` / `<Link>`，禁止再用 store 字段模拟视图切换。
+
 ## 2. 文件与组件
 
 - **单文件硬上限 300 行**（含 import 和注释），建议控制在 150 行左右；接近 300 行必须先拆分。

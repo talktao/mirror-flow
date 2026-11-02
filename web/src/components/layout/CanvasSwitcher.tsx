@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { formatRelativeTime } from '../../lib/format'
 import { useCanvasStore } from '../../stores/canvas'
-import { useUiStore } from '../../stores/ui'
 import { Button } from '../ui/Button'
 import { Icon } from '../ui/Icon'
 
@@ -10,7 +10,7 @@ export function CanvasSwitcher() {
   const items = useCanvasStore((s) => s.items)
   const activeId = useCanvasStore((s) => s.activeId)
   const setActiveId = useCanvasStore((s) => s.setActiveId)
-  const setView = useUiStore((s) => s.setView)
+  const navigate = useNavigate()
 
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
@@ -65,6 +65,7 @@ export function CanvasSwitcher() {
                 className="w-full"
                 onClick={() => {
                   setActiveId(item.id)
+                  navigate(`/canvas/${item.id}`)
                   setOpen(false)
                 }}
               >
@@ -86,7 +87,7 @@ export function CanvasSwitcher() {
               align="start"
               className="w-full"
               onClick={() => {
-                setView('canvases')
+                navigate('/')
                 setOpen(false)
               }}
             >

@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import { useHealth, type ConnState } from '../../hooks/useHealth'
 import { useUiStore } from '../../stores/ui'
 import { Button } from '../ui/Button'
@@ -19,7 +20,7 @@ const CONN_DOT: Record<ConnState, string> = {
 export function TopBar() {
   const { state, info } = useHealth()
   const showNotice = useUiStore((s) => s.showNotice)
-  const setView = useUiStore((s) => s.setView)
+  const navigate = useNavigate()
 
   return (
     <header className="relative z-30 flex h-14 shrink-0 items-center justify-between border-b border-line-soft bg-canvas/80 px-3 backdrop-blur">
@@ -32,7 +33,7 @@ export function TopBar() {
         <CanvasSwitcher />
 
         <div className="hidden sm:block">
-          <Button variant="soft" size="sm" onClick={() => setView('canvases')}>
+          <Button variant="soft" size="sm" onClick={() => navigate('/')}>
             <Icon name="plus" className="size-3.5" />
             画布
           </Button>

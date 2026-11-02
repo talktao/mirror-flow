@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { CanvasCard } from '../components/canvas/CanvasCard'
 import { CanvasFormDialog } from '../components/canvas/CanvasFormDialog'
 import { Button } from '../components/ui/Button'
@@ -31,7 +32,7 @@ function NewCanvasTile({ onClick }: { onClick: () => void }) {
 export default function Canvases() {
   const items = useCanvasStore((s) => s.items)
   const setActiveId = useCanvasStore((s) => s.setActiveId)
-  const setView = useUiStore((s) => s.setView)
+  const navigate = useNavigate()
   const showNotice = useUiStore((s) => s.showNotice)
   const { createCanvas, renameCanvas, deleteCanvas } = useCanvases()
 
@@ -41,7 +42,7 @@ export default function Canvases() {
 
   const handleOpen = (canvas: Canvas) => {
     setActiveId(canvas.id)
-    setView('studio')
+    navigate(`/canvas/${canvas.id}`)
   }
 
   const handleSubmit = async (input: CanvasInput) => {
@@ -66,15 +67,9 @@ export default function Canvases() {
     <div className="min-h-dvh bg-canvas text-ink">
       <header className="flex h-14 items-center justify-between border-b border-line-soft bg-canvas/80 px-4 backdrop-blur">
         <div className="flex items-center gap-3">
-          <Button
-            variant="ghost"
-            size="iconSm"
-            shape="square"
-            aria-label="返回创作台"
-            onClick={() => setView('studio')}
-          >
-            <Icon name="arrow-left" className="size-4" />
-          </Button>
+          <div className="flex size-8 items-center justify-center rounded-[10px] bg-gradient-to-br from-accent to-accent-soft text-white shadow-[0_0_18px_rgba(139,92,246,0.35)]">
+            <Icon name="cat" className="size-[18px]" strokeWidth={1.8} />
+          </div>
           <div>
             <div className="text-[15px] font-semibold">全部画布</div>
             <div className="text-[10.5px] text-muted">{items.length} 张画布</div>
