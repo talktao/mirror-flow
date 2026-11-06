@@ -1,4 +1,6 @@
 import { useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import { useCreateTask } from '../../hooks/useCreateTask'
 import { useModels } from '../../hooks/useModels'
 import { useStudioStore } from '../../stores/studio'
 import { useUiStore } from '../../stores/ui'
@@ -19,7 +21,9 @@ export function ComposerCard() {
   const capability = useStudioStore((s) => s.capability)
   const setCapability = useStudioStore((s) => s.setCapability)
   const showNotice = useUiStore((s) => s.showNotice)
+  const { canvasId } = useParams<{ canvasId: string }>()
   const { models, loading } = useModels()
+  const { submit, isSubmitting } = useCreateTask()
 
   useEffect(() => {
     if (modelId || models.length === 0) return
@@ -27,11 +31,19 @@ export function ComposerCard() {
     setModelId(firstEnabled.id)
   }, [models, modelId, setModelId])
 
-  const canSubmit = prompt.trim().length > 0 && modelId.length > 0
+  const canSubmit = prompt.trim().length > 0 && modelId.length > 0 && Boolean(canvasId)
 
-  const handleSubmit = () => {
-    if (!canSubmit) return
-    showNotice('P0 骨架：任务创建接口将在 P1 接入')
+  const handleSubmit = async () => {
+    if (!canSubmit || isSubmitting || !canvasId) return
+
+    await submit({
+      canvas_id: canvasId,
+      capability,
+      model: modelId,
+      prompt: prompt.trim(),
+      params: {},
+      idempotency_key: globalThis.crypto.randomUUID(),
+    })
   }
 
   return (
@@ -49,7 +61,7 @@ export function ComposerCard() {
         onKeyDown={(e) => {
           if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
             e.preventDefault()
-            handleSubmit()
+            void handleSubmit()
           }
         }}
         rows={3}
@@ -100,9 +112,9 @@ export function ComposerCard() {
           variant="primary"
           size="icon"
           shape="pill"
-          onClick={handleSubmit}
-          disabled={!canSubmit}
-          aria-label="提交"
+          onClick={() => void handleSubmit()}
+          disabled={!canSubmit || isSubmitting}
+          aria-label={isSubmitting ? '提交中' : '提交'}
           className="ml-auto"
         >
           <Icon name="arrow-up" className="size-4" strokeWidth={2} />

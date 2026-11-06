@@ -1,11 +1,14 @@
-import { useState } from 'react'
-import { useTaskStore } from '../../stores/tasks'
+import { useMemo, useState } from 'react'
+import { selectCanvasTasks, useTaskStore } from '../../stores/tasks'
 import { Button } from '../ui/Button'
 import { Icon } from '../ui/Icon'
 
-export function OutputHistory() {
-  const history = useTaskStore((s) => s.history)
+export function OutputHistory({ canvasId }: { canvasId: string }) {
+  const byId = useTaskStore((s) => s.byId)
+  const setActiveTask = useTaskStore((s) => s.setActiveTask)
   const [open, setOpen] = useState(false)
+
+  const history = useMemo(() => selectCanvasTasks(byId, canvasId), [byId, canvasId])
 
   return (
     <div className="absolute bottom-4 left-1/2 z-30 -translate-x-1/2">
@@ -25,13 +28,25 @@ export function OutputHistory() {
           </div>
           {history.length === 0 ? (
             <p className="rounded-lg border border-dashed border-line px-3 py-6 text-center text-[11px] text-faint">
-              暂无输出。生成功能接入后，结果会出现在这里。
+              暂无输出。提交后会在这里看到记录。
             </p>
           ) : (
-            <ul className="space-y-1">
+            <ul className="max-h-[260px] space-y-1 overflow-y-auto">
               {history.map((task) => (
-                <li key={task.id} className="truncate rounded-lg bg-surface-2 px-2 py-1.5 text-[11px]">
-                  {task.prompt}
+                <li key={task.id}>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    shape="square"
+                    align="start"
+                    className="w-full"
+                    onClick={() => {
+                      setActiveTask(canvasId, task.id)
+                      setOpen(false)
+                    }}
+                  >
+                    <span className="truncate text-[11px]">{task.prompt}</span>
+                  </Button>
                 </li>
               ))}
             </ul>
@@ -39,15 +54,12 @@ export function OutputHistory() {
         </div>
       )}
 
-      <Button
-        variant="pill"
-        size="sm"
-        shape="pill"
-        onClick={() => setOpen((v) => !v)}
-      >
+      <Button variant="pill" size="sm" shape="pill" onClick={() => setOpen((v) => !v)}>
         <Icon name="history" className="size-3.5 text-muted" />
         输出历史
-        <span className="rounded-full bg-white/8 px-1.5 text-[10px] text-muted">{history.length}</span>
+        <span className="rounded-full bg-white/8 px-1.5 text-[10px] text-muted">
+          {history.length}
+        </span>
       </Button>
     </div>
   )
